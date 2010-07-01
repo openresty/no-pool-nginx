@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd ..
+patch -p0 -R < no-pool-nginx/patch-nopool
