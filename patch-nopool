@@ -1,6 +1,6 @@
-diff -ur src/core/nginx.h /home/shrimp/MyFiles/nginx-0.8.41/src/core/nginx.h
---- src/core/nginx.h	2010-07-01 13:24:01.258444117 +0800
-+++ /home/shrimp/MyFiles/nginx-0.8.41/src/core/nginx.h	2010-06-07 21:34:56.000000000 +0800
+diff -ur /home/shrimp/MyFiles/test_nginx/src/core/nginx.h src/core/nginx.h
+--- /home/shrimp/MyFiles/test_nginx/src/core/nginx.h	2010-07-01 10:09:31.618478319 +0800
++++ src/core/nginx.h	2010-06-07 21:34:56.000000000 +0800
 @@ -9,7 +9,7 @@
  
  
@@ -10,11 +10,10 @@ diff -ur src/core/nginx.h /home/shrimp/MyFiles/nginx-0.8.41/src/core/nginx.h
  #define NGINX_VER          "nginx/" NGINX_VERSION
  
  #define NGINX_VAR          "NGINX"
-Only in src/core: nginx.h.orig
-Only in src/core: nginx.h.rej
-diff -ur src/core/ngx_array.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_array.c
---- src/core/ngx_array.c	2010-07-01 13:24:01.258444117 +0800
-+++ /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_array.c	2008-06-17 23:00:30.000000000 +0800
+Only in /home/shrimp/MyFiles/test_nginx/src/core: nginx.h~
+diff -ur /home/shrimp/MyFiles/test_nginx/src/core/ngx_array.c src/core/ngx_array.c
+--- /home/shrimp/MyFiles/test_nginx/src/core/ngx_array.c	2010-06-29 15:02:06.681001660 +0800
++++ src/core/ngx_array.c	2008-06-17 23:00:30.000000000 +0800
 @@ -39,15 +39,13 @@
  
      p = a->pool;
@@ -96,16 +95,14 @@ diff -ur src/core/ngx_array.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_arr
      }
  
      elt = (u_char *) a->elts + a->size * a->nelts;
-Only in src/core: ngx_array.c.orig
-Only in src/core: ngx_array.c.rej
-diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_palloc.c
---- src/core/ngx_palloc.c	2010-07-01 13:24:01.258444117 +0800
-+++ /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_palloc.c	2009-12-17 20:25:46.000000000 +0800
-@@ -8,36 +8,24 @@
+Only in /home/shrimp/MyFiles/test_nginx/src/core: ngx_array.c~
+diff -ur /home/shrimp/MyFiles/test_nginx/src/core/ngx_palloc.c src/core/ngx_palloc.c
+--- /home/shrimp/MyFiles/test_nginx/src/core/ngx_palloc.c	2010-07-01 13:38:24.266437800 +0800
++++ src/core/ngx_palloc.c	2009-12-17 20:25:46.000000000 +0800
+@@ -8,30 +8,24 @@
  #include <ngx_core.h>
  
  
--//static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);
 +static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);
  static void *ngx_palloc_large(ngx_pool_t *pool, size_t size);
  
@@ -115,9 +112,8 @@ diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
  {
 -    ngx_pool_t		*p;
 -    ngx_pool_data_t *d;
--	size = sizeof(ngx_pool_t);
--    //p = ngx_memalign(NGX_POOL_ALIGNMENT, size, log);
--	p = ngx_alloc(size, log);
+-    size = sizeof(ngx_pool_t);
+-    p = ngx_alloc(size, log);
 +    ngx_pool_t  *p;
 +
 +    p = ngx_memalign(NGX_POOL_ALIGNMENT, size, log);
@@ -125,37 +121,34 @@ diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
          return NULL;
      }
  
--    /*p->d.last = (u_char *) p + sizeof(ngx_pool_t);
-+    p->d.last = (u_char *) p + sizeof(ngx_pool_t);
-     p->d.end = (u_char *) p + size;
-     p->d.next = NULL;
--    p->d.failed = 0;*/
 -    d = ngx_alloc(sizeof(ngx_pool_data_t), log);
 -	
--	if (d == NULL) {
--		return NULL;
--	}
+-    if (d == NULL) {
+-	return NULL;
+-    }
 -
--	d->next = d;
--	d->prev = d;
--	d->alloc = NULL;
--	p->d = d;
+-    d->next = d;
+-    d->prev = d;
+-    d->alloc = NULL;
+-    p->d = d;
++    p->d.last = (u_char *) p + sizeof(ngx_pool_t);
++    p->d.end = (u_char *) p + size;
++    p->d.next = NULL;
 +    p->d.failed = 0;
  
      size = size - sizeof(ngx_pool_t);
      p->max = (size < NGX_MAX_ALLOC_FROM_POOL) ? size : NGX_MAX_ALLOC_FROM_POOL;
-@@ -55,9 +43,7 @@
+@@ -49,8 +43,7 @@
  void
  ngx_destroy_pool(ngx_pool_t *pool)
  {
--    //ngx_pool_t          *p;
--	ngx_pool_data_t		*d;
--	ngx_pool_data_t		*n;
+-    ngx_pool_data_t     *d;
+-    ngx_pool_data_t	*n;
 +    ngx_pool_t          *p, *n;
      ngx_pool_large_t    *l;
      ngx_pool_cleanup_t  *c;
  
-@@ -85,46 +71,34 @@
+@@ -78,90 +71,144 @@
       * so we can not use this log while the free()ing the pool
       */
  
@@ -172,29 +165,28 @@ diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
      }
  
  #endif
--	if (pool->d->next == pool->d) {
--		ngx_free(pool->d);
--	}
--	else {
+-    if (pool->d->next == pool->d) {
+-    	ngx_free(pool->d);
+-    }
+-    else {
 -        for (d = pool->d, n = d->next; ; d = n, n = n->next) {
--		    if (d->alloc) {
--			    ngx_free(d->alloc);
--		    }
+-            if (d->alloc) {
+-    	        ngx_free(d->alloc);
+-            }
 -            ngx_free(d);
  
 -            if (n == pool->d) {
 -                break;
 -            }
--        }
--	}
 +    for (p = pool, n = pool->d.next; /* void */; p = n, n = n->d.next) {
 +        ngx_free(p);
- 
--	ngx_free(pool);
++
 +        if (n == NULL) {
 +            break;
-+        }
-+    }
+         }
+     }
+-
+-    ngx_free(pool);
  }
  
  
@@ -202,116 +194,152 @@ diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
  ngx_reset_pool(ngx_pool_t *pool)
  {
 -    ngx_pool_t	  *p;
--    //ngx_pool_large_t  *l;
 +    ngx_pool_t        *p;
 +    ngx_pool_large_t  *l;
- 
--	p = ngx_create_pool(sizeof(ngx_pool_t), NULL);
--	ngx_destroy_pool(pool);
--	pool = p;
--    /*for (l = pool->large; l; l = l->next) {
++
 +    for (l = pool->large; l; l = l->next) {
-         if (l->alloc) {
-             ngx_free(l->alloc);
-         }
-@@ -132,42 +106,16 @@
++        if (l->alloc) {
++            ngx_free(l->alloc);
++        }
++    }
  
-     pool->large = NULL;
- 
--    for (d = pool->d; ; p = p->d->next) {
+-    p = ngx_create_pool(sizeof(ngx_pool_t), NULL);
+-    ngx_destroy_pool(pool);
+-    pool = p;
++    pool->large = NULL;
++
 +    for (p = pool; p; p = p->d.next) {
-         p->d.last = (u_char *) p + sizeof(ngx_pool_t);
--    }*/
++        p->d.last = (u_char *) p + sizeof(ngx_pool_t);
 +    }
  }
+ 
++
+ void *
+-ngx_malloc(ngx_pool_t *pool, size_t size)
++ngx_palloc(ngx_pool_t *pool, size_t size)
+ {
+-    ngx_pool_data_t     *new;
+-    void        	*m;
++    u_char      *m;
++    ngx_pool_t  *p;
+ 
+-    m = ngx_alloc(size, pool->log);
+-    if (m == NULL) {
+-	return NULL;
+-    }
++    if (size <= pool->max) {
++
++        p = pool->current;
++
++        do {
++            m = ngx_align_ptr(p->d.last, NGX_ALIGNMENT);
+ 
+-    new = ngx_alloc(sizeof(ngx_pool_data_t), pool->log);
+-    if (new == NULL){
+-        ngx_free(m);
+-	return NULL;
++            if ((size_t) (p->d.end - m) >= size) {
++                p->d.last = m + size;
++
++                return m;
++            }
++
++            p = p->d.next;
++
++        } while (p);
++
++        return ngx_palloc_block(pool, size);
+     }
+ 
+-    new->alloc = m;
+-    new->next = pool->d;
+-    new->prev = pool->d->prev;
+-    pool->d->prev->next = new;
+-    pool->d->prev = new;
+-    return m;	
++    return ngx_palloc_large(pool, size);
+ }
+ 
++
+ void *
+-ngx_palloc(ngx_pool_t *pool, size_t size)
++ngx_pnalloc(ngx_pool_t *pool, size_t size)
+ {
+-    if (size <= 1024) {
+-        return ngx_malloc(pool, size);
++    u_char      *m;
++    ngx_pool_t  *p;
++
++    if (size <= pool->max) {
++
++        p = pool->current;
++
++        do {
++            m = p->d.last;
++
++            if ((size_t) (p->d.end - m) >= size) {
++                p->d.last = m + size;
++
++                return m;
++            }
++
++            p = p->d.next;
++
++        } while (p);
++
++        return ngx_palloc_block(pool, size);
+     }
+ 
+     return ngx_palloc_large(pool, size);
+ }
+ 
  
 -void *
--ngx_malloc(ngx_pool_t *pool, size_t size)
--{
--	ngx_pool_data_t *new;
--	void			*m;
--
--	m = ngx_alloc(size, pool->log);
--    if (m == NULL) {
--		return NULL;
--	}
--
--	new = ngx_alloc(sizeof(ngx_pool_data_t), pool->log);
--	if (new == NULL){
--		ngx_free(m);
--		return NULL;
--	}
--
--	new->alloc = m;
--	new->next = pool->d;
--	new->prev = pool->d->prev;
--	pool->d->prev->next = new;
--	pool->d->prev = new;
--
--	return m;
--	
--}
- 
- void *
- ngx_palloc(ngx_pool_t *pool, size_t size)
- {
--    /*u_char      *m;
-+    u_char      *m;
-     ngx_pool_t  *p;
- 
-     if (size <= pool->max) {
-@@ -188,11 +136,7 @@
-         } while (p);
- 
-         return ngx_palloc_block(pool, size);
--    }*/
--
--	if (size <= 1024) {
--		return ngx_malloc(pool, size);
--	}
-+    }
- 
-     return ngx_palloc_large(pool, size);
- }
-@@ -201,7 +145,7 @@
- void *
- ngx_pnalloc(ngx_pool_t *pool, size_t size)
- {
--    /*u_char      *m;
-+    u_char      *m;
-     ngx_pool_t  *p;
- 
-     if (size <= pool->max) {
-@@ -222,16 +166,13 @@
-         } while (p);
- 
-         return ngx_palloc_block(pool, size);
--    }*/
--
--	if (size <= 1024) {
--		return ngx_malloc(pool, size);
--	}
-+    }
- 
-     return ngx_palloc_large(pool, size);
- }
- 
--/*static void *
-+
+-ngx_pnalloc(ngx_pool_t *pool, size_t size)
 +static void *
- ngx_palloc_block(ngx_pool_t *pool, size_t size)
++ngx_palloc_block(ngx_pool_t *pool, size_t size)
  {
-     u_char      *m;
-@@ -268,7 +209,7 @@
-     pool->current = current ? current : new;
+-    if (size <= 1024) {
+-        return ngx_malloc(pool, size);
++    u_char      *m;
++    size_t       psize;
++    ngx_pool_t  *p, *new, *current;
++
++    psize = (size_t) (pool->d.end - (u_char *) pool);
++
++    m = ngx_memalign(NGX_POOL_ALIGNMENT, psize, pool->log);
++    if (m == NULL) {
++        return NULL;
+     }
  
-     return m;
--}*/
-+}
+-    return ngx_palloc_large(pool, size);
++    new = (ngx_pool_t *) m;
++
++    new->d.end = m + psize;
++    new->d.next = NULL;
++    new->d.failed = 0;
++
++    m += sizeof(ngx_pool_data_t);
++    m = ngx_align_ptr(m, NGX_ALIGNMENT);
++    new->d.last = m + size;
++
++    current = pool->current;
++
++    for (p = current; p->d.next; p = p->d.next) {
++        if (p->d.failed++ > 4) {
++            current = p->d.next;
++        }
++    }
++
++    p->d.next = new;
++
++    pool->current = current ? current : new;
++
++    return m;
+ }
  
  
- static void *
-@@ -296,7 +237,7 @@
+@@ -190,7 +237,7 @@
          }
      }
  
@@ -320,7 +348,7 @@ diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
      if (large == NULL) {
          ngx_free(p);
          return NULL;
-@@ -339,7 +280,6 @@
+@@ -233,7 +280,6 @@
  ngx_pfree(ngx_pool_t *pool, void *p)
  {
      ngx_pool_large_t  *l;
@@ -328,7 +356,7 @@ diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
  
      for (l = pool->large; l; l = l->next) {
          if (p == l->alloc) {
-@@ -347,30 +287,11 @@
+@@ -241,27 +287,9 @@
                             "free: %p", l->alloc);
              ngx_free(l->alloc);
              l->alloc = NULL;
@@ -337,35 +365,29 @@ diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
 -			}
 -			p = l;
 -			break;
-+
-+            return NGX_OK;
+-        }
+-    }
+ 
+-    for (d = pool->d, n = d->next; ; d = n, n = d->next) {
+-        if (p == d->alloc) {
+-            ngx_log_debug1(NGX_LOG_DEBUG_ALLOC, pool->log, 0, "free: %p", d->alloc);
+-            ngx_free(d->alloc);
+-            d->alloc = NULL;
+-            d->prev->next = d->next;
+-            d->next->prev = d->prev;
+-            ngx_free(d);
+             return NGX_OK;
          }
+-        if (d->next == pool->d) {
+-            break;
+-        }
      }
  
--	for (d = pool->d, n = d->next; ; d = n, n = d->next) {
--		if (p == d->alloc) {
--			ngx_log_debug1(NGX_LOG_DEBUG_ALLOC, pool->log, 0, "free: %p", d->alloc);
--			ngx_free(d->alloc);
--			d->alloc = NULL;
--			d->prev->next = d->next;
--			d->next->prev = d->prev;
--			ngx_free(d);
--			return NGX_OK;
--		}
--
--		if (d->next == pool->d) {
--			break;
--		}
--	}
--
      return NGX_DECLINED;
- }
- 
-Only in src/core: ngx_palloc.c.orig
-Only in src/core: ngx_palloc.c.rej
-diff -ur src/core/ngx_palloc.h /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_palloc.h
---- src/core/ngx_palloc.h	2010-07-01 13:24:01.258444117 +0800
-+++ /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_palloc.h	2009-12-17 20:25:46.000000000 +0800
+Only in /home/shrimp/MyFiles/test_nginx/src/core: ngx_palloc.c~
+diff -ur /home/shrimp/MyFiles/test_nginx/src/core/ngx_palloc.h src/core/ngx_palloc.h
+--- /home/shrimp/MyFiles/test_nginx/src/core/ngx_palloc.h	2010-06-25 15:29:55.583652637 +0800
++++ src/core/ngx_palloc.h	2009-12-17 20:25:46.000000000 +0800
 @@ -38,7 +38,6 @@
  
  
@@ -397,5 +419,4 @@ diff -ur src/core/ngx_palloc.h /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
      size_t                max;
      ngx_pool_t           *current;
      ngx_chain_t          *chain;
-Only in src/core: ngx_palloc.h.orig
-Only in src/core: ngx_palloc.h.rej
+Only in /home/shrimp/MyFiles/test_nginx/src: .git
