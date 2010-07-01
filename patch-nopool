@@ -1,5 +1,5 @@
 diff -ur src/core/nginx.h /home/shrimp/MyFiles/nginx-0.8.41/src/core/nginx.h
---- src/core/nginx.h	2010-07-01 10:09:31.618478319 +0800
+--- src/core/nginx.h	2010-07-01 13:24:01.258444117 +0800
 +++ /home/shrimp/MyFiles/nginx-0.8.41/src/core/nginx.h	2010-06-07 21:34:56.000000000 +0800
 @@ -9,7 +9,7 @@
  
@@ -10,9 +10,10 @@ diff -ur src/core/nginx.h /home/shrimp/MyFiles/nginx-0.8.41/src/core/nginx.h
  #define NGINX_VER          "nginx/" NGINX_VERSION
  
  #define NGINX_VAR          "NGINX"
-Only in src/core: nginx.h~
+Only in src/core: nginx.h.orig
+Only in src/core: nginx.h.rej
 diff -ur src/core/ngx_array.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_array.c
---- src/core/ngx_array.c	2010-06-29 15:02:06.681001660 +0800
+--- src/core/ngx_array.c	2010-07-01 13:24:01.258444117 +0800
 +++ /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_array.c	2008-06-17 23:00:30.000000000 +0800
 @@ -39,15 +39,13 @@
  
@@ -95,9 +96,10 @@ diff -ur src/core/ngx_array.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_arr
      }
  
      elt = (u_char *) a->elts + a->size * a->nelts;
-Only in src/core: ngx_array.c~
+Only in src/core: ngx_array.c.orig
+Only in src/core: ngx_array.c.rej
 diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_palloc.c
---- src/core/ngx_palloc.c	2010-06-29 15:01:02.821950786 +0800
+--- src/core/ngx_palloc.c	2010-07-01 13:24:01.258444117 +0800
 +++ /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_palloc.c	2009-12-17 20:25:46.000000000 +0800
 @@ -8,36 +8,24 @@
  #include <ngx_core.h>
@@ -359,9 +361,10 @@ diff -ur src/core/ngx_palloc.c /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
      return NGX_DECLINED;
  }
  
-Only in src/core: ngx_palloc.c~
+Only in src/core: ngx_palloc.c.orig
+Only in src/core: ngx_palloc.c.rej
 diff -ur src/core/ngx_palloc.h /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_palloc.h
---- src/core/ngx_palloc.h	2010-06-25 15:29:55.583652637 +0800
+--- src/core/ngx_palloc.h	2010-07-01 13:24:01.258444117 +0800
 +++ /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_palloc.h	2009-12-17 20:25:46.000000000 +0800
 @@ -38,7 +38,6 @@
  
@@ -394,4 +397,5 @@ diff -ur src/core/ngx_palloc.h /home/shrimp/MyFiles/nginx-0.8.41/src/core/ngx_pa
      size_t                max;
      ngx_pool_t           *current;
      ngx_chain_t          *chain;
-Only in src: .git
+Only in src/core: ngx_palloc.h.orig
+Only in src/core: ngx_palloc.h.rej
