@@ -1,15 +1,16 @@
 diff -ur nginx-0.8.41/src/core/nginx.h nginx-0.8.41-no-pool/src/core/nginx.h
 --- nginx-0.8.41/src/core/nginx.h	2010-06-07 21:34:56.000000000 +0800
-+++ nginx-0.8.41-no-pool/src/core/nginx.h	2010-07-05 12:51:40.150366024 +0800
++++ nginx-0.8.41-no-pool/src/core/nginx.h	2010-07-05 16:32:11.225368435 +0800
 @@ -9,7 +9,7 @@
  
  
  #define nginx_version         8041
 -#define NGINX_VERSION      "0.8.41"
-+#define NGINX_VERSION      "0.8.41 (with no pool)"
++#define NGINX_VERSION      "0.8.41 (without pool)"
  #define NGINX_VER          "nginx/" NGINX_VERSION
  
  #define NGINX_VAR          "NGINX"
+Only in nginx-0.8.41-no-pool/src/core: nginx.h~
 Only in nginx-0.8.41-no-pool/src/core: nginx.h.orig
 Only in nginx-0.8.41-no-pool/src/core: nginx.h.rej
 diff -ur nginx-0.8.41/src/core/ngx_array.c nginx-0.8.41-no-pool/src/core/ngx_array.c
@@ -433,3 +434,4 @@ diff -ur nginx-0.8.41/src/core/ngx_palloc.h nginx-0.8.41-no-pool/src/core/ngx_pa
      ngx_chain_t          *chain;
 Only in nginx-0.8.41-no-pool/src/core: ngx_palloc.h.orig
 Only in nginx-0.8.41-no-pool/src/core: ngx_palloc.h.rej
+Only in nginx-0.8.41-no-pool/src/http: tags
