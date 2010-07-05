@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd ..
-patch -p1 < no-pool-nginx/nginx-0.8.41-no-pool.patch
+patch -p1 < no-pool-nginx/nginx-0.8.41-no_pool.patch
