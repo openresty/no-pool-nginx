@@ -117,7 +117,7 @@ Only in nginx-0.8.41-no-pool/src/core: ngx_array.c.orig
 Only in nginx-0.8.41-no-pool/src/core: ngx_array.c.rej
 diff -ur nginx-0.8.41/src/core/ngx_palloc.c nginx-0.8.41-no-pool/src/core/ngx_palloc.c
 --- nginx-0.8.41/src/core/ngx_palloc.c	2009-12-17 20:25:46.000000000 +0800
-+++ nginx-0.8.41-no-pool/src/core/ngx_palloc.c	2010-07-12 11:38:50.590466735 +0800
++++ nginx-0.8.41-no-pool/src/core/ngx_palloc.c	2010-07-12 13:30:17.122468638 +0800
 @@ -8,24 +8,31 @@
  #include <ngx_core.h>
  
@@ -157,17 +157,16 @@ diff -ur nginx-0.8.41/src/core/ngx_palloc.c nginx-0.8.41-no-pool/src/core/ngx_pa
  
      size = size - sizeof(ngx_pool_t);
      p->max = (size < NGX_MAX_ALLOC_FROM_POOL) ? size : NGX_MAX_ALLOC_FROM_POOL;
-@@ -43,7 +50,8 @@
+@@ -43,7 +50,7 @@
  void
  ngx_destroy_pool(ngx_pool_t *pool)
  {
 -    ngx_pool_t          *p, *n;
-+    ngx_pool_data_t     *d;
-+    ngx_pool_data_t	*n;
++    ngx_pool_data_t     *d, *n;
      ngx_pool_large_t    *l;
      ngx_pool_cleanup_t  *c;
  
-@@ -55,7 +63,7 @@
+@@ -55,7 +62,7 @@
          }
      }
  
@@ -176,7 +175,7 @@ diff -ur nginx-0.8.41/src/core/ngx_palloc.c nginx-0.8.41-no-pool/src/core/ngx_pa
  
          ngx_log_debug1(NGX_LOG_DEBUG_ALLOC, pool->log, 0, "free: %p", l->alloc);
  
-@@ -71,144 +79,89 @@
+@@ -71,144 +78,89 @@
       * so we can not use this log while the free()ing the pool
       */
  
@@ -366,7 +365,7 @@ diff -ur nginx-0.8.41/src/core/ngx_palloc.c nginx-0.8.41-no-pool/src/core/ngx_pa
  }
  
  
-@@ -226,18 +179,7 @@
+@@ -226,18 +178,7 @@
  
      n = 0;
  
@@ -386,7 +385,7 @@ diff -ur nginx-0.8.41/src/core/ngx_palloc.c nginx-0.8.41-no-pool/src/core/ngx_pa
      if (large == NULL) {
          ngx_free(p);
          return NULL;
-@@ -262,7 +204,7 @@
+@@ -262,7 +203,7 @@
          return NULL;
      }
  
@@ -395,7 +394,7 @@ diff -ur nginx-0.8.41/src/core/ngx_palloc.c nginx-0.8.41-no-pool/src/core/ngx_pa
      if (large == NULL) {
          ngx_free(p);
          return NULL;
-@@ -279,17 +221,41 @@
+@@ -279,17 +220,41 @@
  ngx_int_t
  ngx_pfree(ngx_pool_t *pool, void *p)
  {
