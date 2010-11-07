@@ -1,18 +1,18 @@
-diff -ur nginx-0.8.41/src/core/nginx.h nginx-0.8.41-no-pool/src/core/nginx.h
---- nginx-0.8.41/src/core/nginx.h	2010-06-07 21:34:56.000000000 +0800
-+++ nginx-0.8.41-no-pool/src/core/nginx.h	2010-07-05 16:32:11.225368435 +0800
+diff -ur nginx-0.8.53/src/core/nginx.h nginx-0.8.53-no-pool/src/core/nginx.h
+--- nginx-0.8.53/src/core/nginx.h	2010-06-07 21:34:56.000000000 +0800
++++ nginx-0.8.53-no-pool/src/core/nginx.h	2010-07-05 16:32:11.225368435 +0800
 @@ -9,7 +9,7 @@
  
  
- #define nginx_version         8041
--#define NGINX_VERSION      "0.8.41"
-+#define NGINX_VERSION      "0.8.41 (without pool)"
+ #define nginx_version         8053
+-#define NGINX_VERSION      "0.8.53"
++#define NGINX_VERSION      "0.8.53 (without pool)"
  #define NGINX_VER          "nginx/" NGINX_VERSION
  
  #define NGINX_VAR          "NGINX"
-diff -ur nginx-0.8.41/src/core/ngx_array.c nginx-0.8.41-no-pool/src/core/ngx_array.c
---- nginx-0.8.41/src/core/ngx_array.c	2008-06-17 23:00:30.000000000 +0800
-+++ nginx-0.8.41-no-pool/src/core/ngx_array.c	2010-07-12 11:53:44.974516030 +0800
+diff -ur nginx-0.8.53/src/core/ngx_array.c nginx-0.8.53-no-pool/src/core/ngx_array.c
+--- nginx-0.8.53/src/core/ngx_array.c	2008-06-17 23:00:30.000000000 +0800
++++ nginx-0.8.53-no-pool/src/core/ngx_array.c	2010-07-12 11:53:44.974516030 +0800
 @@ -39,13 +39,7 @@
  
      p = a->pool;
@@ -109,9 +109,9 @@ diff -ur nginx-0.8.41/src/core/ngx_array.c nginx-0.8.41-no-pool/src/core/ngx_arr
      }
  
      elt = (u_char *) a->elts + a->size * a->nelts;
-diff -ur nginx-0.8.41/src/core/ngx_palloc.c nginx-0.8.41-no-pool/src/core/ngx_palloc.c
---- nginx-0.8.41/src/core/ngx_palloc.c	2009-12-17 20:25:46.000000000 +0800
-+++ nginx-0.8.41-no-pool/src/core/ngx_palloc.c	2010-07-12 13:30:17.122468638 +0800
+diff -ur nginx-0.8.53/src/core/ngx_palloc.c nginx-0.8.53-no-pool/src/core/ngx_palloc.c
+--- nginx-0.8.53/src/core/ngx_palloc.c	2009-12-17 20:25:46.000000000 +0800
++++ nginx-0.8.53-no-pool/src/core/ngx_palloc.c	2010-07-12 13:30:17.122468638 +0800
 @@ -8,24 +8,31 @@
  #include <ngx_core.h>
  
@@ -432,9 +432,9 @@ diff -ur nginx-0.8.41/src/core/ngx_palloc.c nginx-0.8.41-no-pool/src/core/ngx_pa
      }
  
      return NGX_DECLINED;
-diff -ur nginx-0.8.41/src/core/ngx_palloc.h nginx-0.8.41-no-pool/src/core/ngx_palloc.h
---- nginx-0.8.41/src/core/ngx_palloc.h	2009-12-17 20:25:46.000000000 +0800
-+++ nginx-0.8.41-no-pool/src/core/ngx_palloc.h	2010-07-05 12:51:40.318366087 +0800
+diff -ur nginx-0.8.53/src/core/ngx_palloc.h nginx-0.8.53-no-pool/src/core/ngx_palloc.h
+--- nginx-0.8.53/src/core/ngx_palloc.h	2009-12-17 20:25:46.000000000 +0800
++++ nginx-0.8.53-no-pool/src/core/ngx_palloc.h	2010-07-05 12:51:40.318366087 +0800
 @@ -38,6 +38,7 @@
  
  
