@@ -1,6 +1,6 @@
 diff -ur nginx-1.0.4/src/core/nginx.h nginx-1.0.4-no-pool/src/core/nginx.h
---- nginx-1.0.4/src/core/nginx.h	2010-06-07 21:34:56.000000000 +0800
-+++ nginx-1.0.4-no-pool/src/core/nginx.h	2010-07-05 16:32:11.225368435 +0800
+--- nginx-1.0.4/src/core/nginx.h	2011-05-26 15:31:40.000000000 +0800
++++ nginx-1.0.4-no-pool/src/core/nginx.h	2011-06-30 17:00:43.540946999 +0800
 @@ -9,7 +9,7 @@
  
  
@@ -12,7 +12,7 @@ diff -ur nginx-1.0.4/src/core/nginx.h nginx-1.0.4-no-pool/src/core/nginx.h
  #define NGINX_VAR          "NGINX"
 diff -ur nginx-1.0.4/src/core/ngx_array.c nginx-1.0.4-no-pool/src/core/ngx_array.c
 --- nginx-1.0.4/src/core/ngx_array.c	2008-06-17 23:00:30.000000000 +0800
-+++ nginx-1.0.4-no-pool/src/core/ngx_array.c	2010-07-12 11:53:44.974516030 +0800
++++ nginx-1.0.4-no-pool/src/core/ngx_array.c	2011-06-30 17:00:43.540946999 +0800
 @@ -39,13 +39,7 @@
  
      p = a->pool;
@@ -111,7 +111,7 @@ diff -ur nginx-1.0.4/src/core/ngx_array.c nginx-1.0.4-no-pool/src/core/ngx_array
      elt = (u_char *) a->elts + a->size * a->nelts;
 diff -ur nginx-1.0.4/src/core/ngx_palloc.c nginx-1.0.4-no-pool/src/core/ngx_palloc.c
 --- nginx-1.0.4/src/core/ngx_palloc.c	2009-12-17 20:25:46.000000000 +0800
-+++ nginx-1.0.4-no-pool/src/core/ngx_palloc.c	2010-07-12 13:30:17.122468638 +0800
++++ nginx-1.0.4-no-pool/src/core/ngx_palloc.c	2011-06-30 17:06:36.060946999 +0800
 @@ -8,24 +8,31 @@
  #include <ngx_core.h>
  
@@ -169,7 +169,7 @@ diff -ur nginx-1.0.4/src/core/ngx_palloc.c nginx-1.0.4-no-pool/src/core/ngx_pall
  
          ngx_log_debug1(NGX_LOG_DEBUG_ALLOC, pool->log, 0, "free: %p", l->alloc);
  
-@@ -71,144 +78,89 @@
+@@ -71,34 +78,45 @@
       * so we can not use this log while the free()ing the pool
       */
  
@@ -215,36 +215,50 @@ diff -ur nginx-1.0.4/src/core/ngx_palloc.c nginx-1.0.4-no-pool/src/core/ngx_pall
  {
 -    ngx_pool_t        *p;
 -    ngx_pool_large_t  *l;
-+    ngx_pool_t	  *p;
++    ngx_pool_data_t     *p, *tmp;
++    ngx_pool_large_t    *l;
++
++    for (l = pool->large; l ; l = l->next) {
++
++        ngx_log_debug1(NGX_LOG_DEBUG_ALLOC, pool->log, 0, "free: %p", l->alloc);
  
 -    for (l = pool->large; l; l = l->next) {
--        if (l->alloc) {
--            ngx_free(l->alloc);
--        }
--    }
--
--    pool->large = NULL;
--
+         if (l->alloc) {
+             ngx_free(l->alloc);
+         }
+@@ -106,109 +124,65 @@
+ 
+     pool->large = NULL;
+ 
 -    for (p = pool; p; p = p->d.next) {
 -        p->d.last = (u_char *) p + sizeof(ngx_pool_t);
--    }
-+    p = ngx_create_pool(sizeof(ngx_pool_t), NULL);
-+    ngx_destroy_pool(pool);
-+    pool = p;
- }
++    p = pool->d->next;
++    while (p != pool->d) {
++        tmp = p;
++        ngx_free(p->alloc);
++        p->prev->next = p->next;
++        p->next->prev = p->prev;
++        p = p->next;
++        ngx_free(tmp);
+     }
+-}
  
--
++    ngx_free(pool->d->alloc);
++    pool->d->alloc = NULL;
++
++}
+ 
  void *
 -ngx_palloc(ngx_pool_t *pool, size_t size)
 +ngx_malloc(ngx_pool_t *pool, size_t size)
  {
 -    u_char      *m;
 -    ngx_pool_t  *p;
+-
+-    if (size <= pool->max) {
 +    ngx_pool_data_t     *new;
 +    void        	*m;
  
--    if (size <= pool->max) {
--
 -        p = pool->current;
 -
 -        do {
@@ -359,7 +373,7 @@ diff -ur nginx-1.0.4/src/core/ngx_palloc.c nginx-1.0.4-no-pool/src/core/ngx_pall
  }
  
  
-@@ -226,18 +178,7 @@
+@@ -226,18 +200,7 @@
  
      n = 0;
  
@@ -379,7 +393,7 @@ diff -ur nginx-1.0.4/src/core/ngx_palloc.c nginx-1.0.4-no-pool/src/core/ngx_pall
      if (large == NULL) {
          ngx_free(p);
          return NULL;
-@@ -262,7 +203,7 @@
+@@ -262,7 +225,7 @@
          return NULL;
      }
  
@@ -388,7 +402,7 @@ diff -ur nginx-1.0.4/src/core/ngx_palloc.c nginx-1.0.4-no-pool/src/core/ngx_pall
      if (large == NULL) {
          ngx_free(p);
          return NULL;
-@@ -279,17 +220,41 @@
+@@ -279,17 +242,41 @@
  ngx_int_t
  ngx_pfree(ngx_pool_t *pool, void *p)
  {
@@ -432,9 +446,10 @@ diff -ur nginx-1.0.4/src/core/ngx_palloc.c nginx-1.0.4-no-pool/src/core/ngx_pall
      }
  
      return NGX_DECLINED;
+Only in nginx-1.0.4-no-pool/src/core: ngx_palloc.c~
 diff -ur nginx-1.0.4/src/core/ngx_palloc.h nginx-1.0.4-no-pool/src/core/ngx_palloc.h
 --- nginx-1.0.4/src/core/ngx_palloc.h	2009-12-17 20:25:46.000000000 +0800
-+++ nginx-1.0.4-no-pool/src/core/ngx_palloc.h	2010-07-05 12:51:40.318366087 +0800
++++ nginx-1.0.4-no-pool/src/core/ngx_palloc.h	2011-06-30 17:00:43.540946999 +0800
 @@ -38,6 +38,7 @@
  
  
