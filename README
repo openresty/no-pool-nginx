@@ -2,23 +2,23 @@ Name
     no-pool-nginx
 
 Description
-    This is a patch file to nginx source. It replaces nginx's pool machanism 
-    with plain malloc&free to help tools like valgrind better detect memory 
-    problems.
+    This is a patch file to the nginx source. It replaces nginx's pool machanism
+    with plain malloc & free to help tools like valgrind's memcheck to detect
+    memory issues more reliably.
 
 Usage
-    1. change your present work directory to nginx source directory
-       $ cd (your nginx source directory).
-    2. $ git clone git://github.com/shrimp/no-pool-nginx.git
-    3. $ cd no-pool-nginx
-    4. $ ./build
-    5. then cofigure and make your nginx source.
+
+    cd nginx-VERSION/
+    patch -p1 < /path/to/nginx-VERSION-no_pool.patch
+    ./configure
+    make
+    make install
 
 Copyright & License
 
     This program is licenced under the BSD licence.
 
-    Copyright (c) 2010, Taobao Inc, Alibaba Group (http://www.taobao.com/).
+    Copyright (c) 2010, 2011, 2012, Zhang "agentzh" Yichun <agentzh@gmail.com>.
     Copyright (c) 2010, Shrimp <shrimp0597@gmail.com>.
 
     All rights reserved.
