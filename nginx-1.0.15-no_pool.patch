@@ -1,12 +1,12 @@
 diff -urx '*~' -x '*.swp' nginx-1.0.15/src/core/nginx.h nginx-1.0.15-patched/src/core/nginx.h
 --- nginx-1.0.15/src/core/nginx.h	2012-04-12 20:47:36.000000000 +0800
-+++ nginx-1.0.15-patched/src/core/nginx.h	2012-06-04 16:33:14.293440973 +0800
++++ nginx-1.0.15-patched/src/core/nginx.h	2012-06-04 17:33:59.186441186 +0800
 @@ -10,7 +10,7 @@
  
  
  #define nginx_version      1000015
 -#define NGINX_VERSION      "1.0.15"
-+#define NGINX_VERSION      "1.0.15 (without pool)"
++#define NGINX_VERSION      "1.0.15 (no pool)"
  #define NGINX_VER          "nginx/" NGINX_VERSION
  
  #define NGINX_VAR          "NGINX"
