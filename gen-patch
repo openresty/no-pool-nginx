@@ -1,0 +1,4 @@
+#!/bin/bash
+
+diff -urx '*~' -x '*.swp' $1/src $1-patched/src
+
