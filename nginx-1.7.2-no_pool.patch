@@ -9,7 +9,7 @@ diff -urp nginx-1.7.2/src/core/nginx.h nginx-1.7.2-patched/src/core/nginx.h
 +#define NGINX_VERSION      "1.7.2 (no pool)"
  #define NGINX_VER          "nginx/" NGINX_VERSION
  
- #define NGINX_VAR          "NGINX"
+ #ifdef NGX_BUILD
 diff -urp nginx-1.7.2/src/core/ngx_array.c nginx-1.7.2-patched/src/core/ngx_array.c
 --- nginx-1.7.2/src/core/ngx_array.c	2014-01-22 05:43:00.000000000 -0800
 +++ nginx-1.7.2-patched/src/core/ngx_array.c	2014-01-27 21:25:14.887049509 -0800
