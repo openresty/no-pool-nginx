@@ -26,7 +26,7 @@ Copyright & License
 
 This program is licenced under the BSD licence.
 
-Copyright (c) 2010-2016, Yichun "agentzh" Zhang <agentzh@gmail.com>, CloudFlare Inc.
+Copyright (c) 2010-2017, Yichun "agentzh" Zhang <agentzh@gmail.com>, OpenResty Inc.
 
 Copyright (c) 2010, Shrimp <shrimp0597@gmail.com>.
 
